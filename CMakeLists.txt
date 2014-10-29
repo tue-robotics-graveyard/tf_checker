@@ -7,6 +7,13 @@ find_package(catkin REQUIRED COMPONENTS
   tf
 )
 
+catkin_package(
+	#  INCLUDE_DIRS include
+	#  LIBRARIES depth_map_to_point_cloud
+	#  CATKIN_DEPENDS cv_bridge image_geometry pcl_ros roscpp sensor_msgs stereo_msgs tf
+	#  DEPENDS system_lib
+)
+
 ###########
 ## Build ##
 ###########
