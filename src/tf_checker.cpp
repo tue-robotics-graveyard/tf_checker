@@ -57,10 +57,19 @@ TFNode* findOrCreateNode(string frame_id) {
 void tf_callback(const tf::tfMessage::ConstPtr& msg) {
 	for(vector<geometry_msgs::TransformStamped>::const_iterator it = msg->transforms.begin(); it != msg->transforms.end(); ++it) {
 		const geometry_msgs::TransformStamped& tf = (*it);
+		
+		std::string parent_frame = tf.header.frame_id;
+                std::string child_frame = tf.child_frame_id;
+
+		if (!parent_frame.empty() && parent_frame[0] != '/')
+			parent_frame = "/" + parent_frame;
+
+                if (!child_frame.empty() && child_frame[0] != '/')
+                        child_frame = "/" + child_frame;
 
 		// find nodes corrsponding to parent and child frame, and create if they do not exist
-		TFNode* parent_node = findOrCreateNode(tf.header.frame_id);
-		TFNode* child_node = findOrCreateNode(tf.child_frame_id);
+		TFNode* parent_node = findOrCreateNode(parent_frame);
+		TFNode* child_node = findOrCreateNode(child_frame);
 
 		// add child frame to node
         parent_node->addChild(child_node, tf.header.stamp);
